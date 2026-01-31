@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <!-- Meta tag per Web App su iOS (Fullscreen) -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="sono il migliore">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- CAMBIA IL LINK QUI SOTTO PER L'ICONA DELLA HOME SCREEN -->
+    <link rel="apple-touch-icon" href="immagine.png">
+    
+    <title>SEI SCARSO!!!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Palette Cartoon Pastello */
+            --cart-yellow: #FFF4BD;
+            --cart-pink: #FFD1DC;
+            --cart-cyan: #B2EBF2;
+            --cart-orange: #FFCCBC;
+            --cart-green: #C8E6C9;
+            --cart-black: #2D3436; 
+        }
+
+        /* Impedisce il rimbalzo della pagina su iOS */
+        html, body {
+            position: fixed;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background-color: #FDFDFD;
+            color: var(--cart-black);
+            touch-action: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 2000px;
+            margin: 0;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+        }
+        
+        .card-wrapper {
+            width: 70vw;
+            max-width: 400px; 
+            min-width: 260px;
+            aspect-ratio: 9 / 16;
+            position: relative;
+            transform-style: preserve-3d;
+            cursor: grab;
+            will-change: transform;
+            z-index: 10;
+        }
+
+        @media (min-height: 1000px) {
+            .card-wrapper {
+                max-width: 450px;
+            }
+        }
+
+        .card-wrapper:active {
+            cursor: grabbing;
+        }
+
+        .smooth-spin {
+            animation: softSpin 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes softSpin {
+            0% { transform: translate(0,0) rotateY(0deg) scale(1); }
+            30% { transform: translate(0,0) rotateY(720deg) scale(1.1) rotateZ(5deg); }
+            60% { transform: translate(0,0) rotateY(1440deg) scale(0.9) rotateZ(-5deg); }
+            100% { transform: translate(0,0) rotateY(2160deg) scale(1); }
+        }
+
+        .card-thickness {
+            position: absolute;
+            inset: 0;
+            border: 4px solid var(--cart-black);
+            border-radius: 28px;
+            transform-style: preserve-3d;
+            pointer-events: none;
+        }
+
+        .card-front {
+            position: absolute;
+            inset: 0;
+            background: white;
+            border: 5px solid var(--cart-black);
+            outline: 6px solid var(--cart-pink);
+            outline-offset: -14px;
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            z-index: 10;
+            transform: translateZ(10px);
+            backface-visibility: hidden;
+        }
+
+        #displayImage {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        #mysteryOverlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(6rem, 20vw, 10rem);
+            font-weight: 700;
+            color: white;
+            -webkit-text-stroke: 4px var(--cart-black); 
+            background: var(--cart-cyan);
+            opacity: 0;
+            z-index: 20;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .card-back {
+            position: absolute;
+            inset: 0;
+            background: var(--cart-yellow);
+            border: 5px solid var(--cart-black);
+            outline: 6px solid var(--cart-cyan);
+            outline-offset: -14px;
+            border-radius: 28px;
+            transform: rotateY(180deg) translateZ(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            z-index: 5;
+            backface-visibility: hidden;
+        }
+
+        .card-back::after {
+            content: "?";
+            font-size: clamp(4rem, 15vw, 7rem);
+            font-weight: 900;
+            color: var(--cart-black);
+            background: var(--cart-pink);
+            width: clamp(80px, 25vw, 120px);
+            height: clamp(80px, 25vw, 120px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 5px solid var(--cart-black);
+            border-radius: 50%;
+            transform: rotate(-10deg);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="cardContainer" class="card-wrapper">
+        <div class="card-thickness" style="transform: translateZ(10px); background: var(--cart-orange);"></div>
+        <div class="card-thickness" style="transform: translateZ(5px); background: var(--cart-yellow);"></div>
+        <div class="card-thickness" style="transform: translateZ(0px); background: var(--cart-cyan);"></div>
+        <div class="card-thickness" style="transform: translateZ(-5px); background: var(--cart-pink);"></div>
+        <div class="card-thickness" style="transform: translateZ(-10px); background: var(--cart-green);"></div>
+
+        <div class="card-back"></div>
+
+        <div class="card-front">
+            <div id="mysteryOverlay">?</div>
+            <img id="displayImage" src="base.png" alt="COM'è POSSIBILE!!!">
+        </div>
+    </div>
+
+    <script>
+        const myPhotos = [
+"./foto/1.png",
+"./foto/2.png",
+"./foto/3.png",
+"./foto/4.png",
+"./foto/5.png",
+"./foto/6.png",
+"./foto/7.png",
+"./foto/a.png",
+"./foto/b.png",
+"./foto/c.png",
+"./foto/d.png",
+"./foto/e.png",
+"./foto/f.png",
+"./foto/g.png",
+"./foto/h.png",
+"./foto/i.png",
+"./foto/j.png",
+"./foto/k.png",
+"./foto/l.png",
+"./foto/m.png",
+"./foto/n.png",
+"./foto/o.png",
+"./foto/p.png",
+"./foto/q.png",
+"./foto/r.png",
+"./foto/s.png",
+"./foto/t.png",
+"./foto/u.png",
+"./foto/v.png",
+"./foto/x.png",
+"./foto/y.png",
+"./foto/z.png"
+
+	    
+        ];
+
+        const cardContainer = document.getElementById('cardContainer');
+        const img = document.getElementById('displayImage');
+        const mysteryOverlay = document.getElementById('mysteryOverlay');
+
+        let rolling = false;
+        let isDragging = false;
+        let startX, startY;
+        let currentX = 0, currentY = 0;
+
+        function runSpinAnimation() {
+            if (rolling) return;
+            rolling = true;
+
+            img.style.opacity = "0";
+            mysteryOverlay.style.opacity = "1";
+            
+            cardContainer.classList.remove('smooth-spin');
+            void cardContainer.offsetWidth; 
+            cardContainer.classList.add('smooth-spin');
+
+            setTimeout(() => {
+                img.src = myPhotos[Math.floor(Math.random() * myPhotos.length)];
+            }, 1000);
+
+            setTimeout(() => {
+                rolling = false;
+                mysteryOverlay.style.opacity = "0";
+                img.style.opacity = "1";
+                cardContainer.classList.remove('smooth-spin');
+                cardContainer.style.transform = `translate(0, 0) rotateX(0deg) rotateY(0deg)`;
+            }, 2000);
+        }
+
+        const onStart = (e) => {
+            if (rolling) return;
+            isDragging = true;
+            const pos = e.touches ? e.touches[0] : e;
+            startX = pos.clientX;
+            startY = pos.clientY;
+            cardContainer.style.transition = "none";
+        };
+
+        const onMove = (e) => {
+            if (rolling) return;
+            const pos = e.touches ? e.touches[0] : e;
+            
+            if (isDragging) {
+                if (e.cancelable) e.preventDefault();
+                
+                currentX = pos.clientX - startX;
+                currentY = pos.clientY - startY;
+                const xRotation = -currentY / 15;
+                const yRotation = currentX / 15;
+                cardContainer.style.transform = `translate(${currentX}px, ${currentY}px) rotateX(${xRotation}deg) rotateY(${yRotation}deg)`;
+            } else {
+                const mouseX = (pos.clientX / window.innerWidth) - 0.5;
+                const mouseY = (pos.clientY / window.innerHeight) - 0.5;
+                cardContainer.style.transform = `rotateY(${mouseX * 25}deg) rotateX(${-mouseY * 25}deg)`;
+            }
+        };
+
+        const onEnd = () => {
+            if (!isDragging) return;
+            isDragging = false;
+
+            const threshold = 80; 
+            if (Math.abs(currentX) > threshold || Math.abs(currentY) > threshold) {
+                runSpinAnimation();
+            } else {
+                cardContainer.style.transition = "transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+                cardContainer.style.transform = `translate(0, 0) rotateX(0deg) rotateY(0deg)`;
+            }
+            currentX = 0;
+            currentY = 0;
+        };
+
+        window.addEventListener('mousedown', onStart);
+        window.addEventListener('mousemove', onMove);
+        window.addEventListener('mouseup', onEnd);
+
+        cardContainer.addEventListener('touchstart', onStart, { passive: false });
+        window.addEventListener('touchmove', onMove, { passive: false });
+        window.addEventListener('touchend', onEnd);
+
+        window.addEventListener('resize', () => {
+            cardContainer.style.transform = `translate(0, 0) rotateX(0deg) rotateY(0deg)`;
+        });
+
+        document.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+    </script>
+</body>
+</html>

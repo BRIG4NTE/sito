@@ -4,21 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
-    <!-- Meta tag per Web App su iOS (Fullscreen) -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="sono il migliore">
+    <meta name="apple-mobile-web-app-title" content="MA CHE NE SO">
     <meta name="mobile-web-app-capable" content="yes">
     
-    <!-- CAMBIA IL LINK QUI SOTTO PER L'ICONA DELLA HOME SCREEN -->
-    <link rel="apple-touch-icon" href="immagine.png">
+    <link rel="apple-touch-icon" href="goku.png">
     
-    <title>SEI SCARSO!!!</title>
+    <title>Franco Battiato il migliore</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Palette Cartoon Pastello */
             --cart-yellow: #FFF4BD;
             --cart-pink: #FFD1DC;
             --cart-cyan: #B2EBF2;
@@ -27,293 +24,271 @@
             --cart-black: #2D3436; 
         }
 
-        /* Impedisce il rimbalzo della pagina su iOS */
         html, body {
-            position: fixed;
             overflow: hidden;
             width: 100%;
             height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #FDFDFD;
+            font-family: 'Fredoka', sans-serif;
+            touch-action: manipulation;
         }
 
         body {
-            font-family: 'Fredoka', sans-serif;
-            background-color: #FDFDFD;
-            color: var(--cart-black);
-            touch-action: none;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            perspective: 2000px;
-            margin: 0;
-            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-        }
-        
-        .card-wrapper {
-            width: 70vw;
-            max-width: 400px; 
-            min-width: 260px;
-            aspect-ratio: 9 / 16;
-            position: relative;
-            transform-style: preserve-3d;
-            cursor: grab;
-            will-change: transform;
-            z-index: 10;
+            padding: env(safe-area-inset-top) 6px env(safe-area-inset-bottom) 6px;
         }
 
-        @media (min-height: 1000px) {
-            .card-wrapper {
-                max-width: 450px;
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            height: 98vh;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        .card {
+            width: 98%;
+            background: white;
+            border: 5px solid var(--cart-black);
+            border-radius: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease-out;
+            box-shadow: 0 10px 0 var(--cart-black);
+            font-weight: 700;
+            font-size: clamp(1rem, 5vw, 1.35rem);
+            color: var(--cart-black);
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            min-height: 150px;
+        }
+
+        .card:active {
+            transform: scale(0.96);
+        }
+
+        .card:nth-child(1) { 
+            flex-grow: 1; 
+            background-color: var(--cart-pink); 
+            outline: 6px solid white; 
+            outline-offset: -16px; 
+        }
+        
+        .card:nth-child(2) { 
+            flex-grow: 0; 
+            height: 25vh; 
+            background-color: var(--cart-cyan); 
+            outline: 6px solid white; 
+            outline-offset: -16px; 
+        }
+        
+        .card:nth-child(3) { 
+            flex-grow: 1; 
+            background-color: var(--cart-yellow); 
+            outline: 6px solid white; 
+            outline-offset: -16px; 
+        }
+
+        @media (min-width: 768px) {
+            .cards-container {
+                flex-direction: row;
+                max-width: 1200px;
+                height: auto;
+                gap: 20px;
+            }
+            .card, .card:nth-child(2) {
+                width: 30%;
+                height: 400px;
+                flex-grow: 0;
             }
         }
 
-        .card-wrapper:active {
-            cursor: grabbing;
-        }
-
-        .smooth-spin {
-            animation: softSpin 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-
-        @keyframes softSpin {
-            0% { transform: translate(0,0) rotateY(0deg) scale(1); }
-            30% { transform: translate(0,0) rotateY(720deg) scale(1.1) rotateZ(5deg); }
-            60% { transform: translate(0,0) rotateY(1440deg) scale(0.9) rotateZ(-5deg); }
-            100% { transform: translate(0,0) rotateY(2160deg) scale(1); }
-        }
-
-        .card-thickness {
-            position: absolute;
+        #fullscreenOverlay {
+            position: fixed;
             inset: 0;
-            border: 4px solid var(--cart-black);
-            border-radius: 28px;
-            transform-style: preserve-3d;
-            pointer-events: none;
+            background: rgba(255, 255, 255, 0.98);
+            display: none;
+            z-index: 100;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
         }
 
-        .card-front {
-            position: absolute;
-            inset: 0;
+        .full-card {
+            width: 94%;
+            max-width: 450px;
+            aspect-ratio: 1 / 1.35;
             background: white;
-            border: 5px solid var(--cart-black);
-            outline: 6px solid var(--cart-pink);
-            outline-offset: -14px;
-            border-radius: 28px;
+            border: 6px solid var(--cart-black);
+            border-radius: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-            z-index: 10;
-            transform: translateZ(10px);
-            backface-visibility: hidden;
-        }
-
-        #displayImage {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            opacity: 1;
-            transition: opacity 0.3s ease;
-        }
-
-        #mysteryOverlay {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: clamp(6rem, 20vw, 10rem);
+            padding: 35px;
+            text-align: center;
+            font-size: clamp(1.4rem, 8vw, 2.2rem);
             font-weight: 700;
-            color: white;
-            -webkit-text-stroke: 4px var(--cart-black); 
-            background: var(--cart-cyan);
+            box-shadow: 0 16px 0 var(--cart-black);
+            animation: popInBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes popInBounce {
+            0% { 
+                transform: scale(0.2) rotate(-15deg); 
+                opacity: 0;
+            }
+            70% {
+                transform: scale(1.05) rotate(2deg);
+            }
+            100% { 
+                transform: scale(1) rotate(0deg); 
+                opacity: 1;
+            }
+        }
+
+        .close-btn {
+            margin-top: 30px;
+            background: var(--cart-orange);
+            border: 4px solid var(--cart-black);
+            padding: 18px 50px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 8px 0 var(--cart-black);
+            -webkit-tap-highlight-color: transparent;
+            transition: transform 0.2s;
             opacity: 0;
-            z-index: 20;
-            pointer-events: none;
-            transition: opacity 0.2s ease;
+            animation: fadeIn 0.4s ease forwards 0.3s;
         }
 
-        .card-back {
-            position: absolute;
-            inset: 0;
-            background: var(--cart-yellow);
-            border: 5px solid var(--cart-black);
-            outline: 6px solid var(--cart-cyan);
-            outline-offset: -14px;
-            border-radius: 28px;
-            transform: rotateY(180deg) translateZ(10px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            z-index: 5;
-            backface-visibility: hidden;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .card-back::after {
-            content: "?";
-            font-size: clamp(4rem, 15vw, 7rem);
-            font-weight: 900;
-            color: var(--cart-black);
-            background: var(--cart-pink);
-            width: clamp(80px, 25vw, 120px);
-            height: clamp(80px, 25vw, 120px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 5px solid var(--cart-black);
-            border-radius: 50%;
-            transform: rotate(-10deg);
+        .close-btn:active {
+            transform: translateY(5px);
+            box-shadow: 0 3px 0 var(--cart-black);
         }
+
     </style>
 </head>
 <body>
 
-    <div id="cardContainer" class="card-wrapper">
-        <div class="card-thickness" style="transform: translateZ(10px); background: var(--cart-orange);"></div>
-        <div class="card-thickness" style="transform: translateZ(5px); background: var(--cart-yellow);"></div>
-        <div class="card-thickness" style="transform: translateZ(0px); background: var(--cart-cyan);"></div>
-        <div class="card-thickness" style="transform: translateZ(-5px); background: var(--cart-pink);"></div>
-        <div class="card-thickness" style="transform: translateZ(-10px); background: var(--cart-green);"></div>
+    <div class="cards-container" id="mainGrid">
+        <div class="card" onclick="selectCard(this)"></div>
+        <div class="card" onclick="selectCard(this)"></div>
+        <div class="card" onclick="selectCard(this)"></div>
+    </div>
 
-        <div class="card-back"></div>
-
-        <div class="card-front">
-            <div id="mysteryOverlay">?</div>
-            <img id="displayImage" src="base.png" alt="COM'è POSSIBILE!!!">
-        </div>
+    <div id="fullscreenOverlay">
+        <div class="full-card" id="fullCardContent"></div>
+        <button class="close-btn" onclick="closeOverlay()">PROSSIME CARTE</button>
     </div>
 
     <script>
-        const myPhotos = [
-"./foto/1.png",
-"./foto/2.png",
-"./foto/3.png",
-"./foto/4.png",
-"./foto/5.png",
-"./foto/6.png",
-"./foto/7.png",
-"./foto/a.png",
-"./foto/b.png",
-"./foto/c.png",
-"./foto/d.png",
-"./foto/e.png",
-"./foto/f.png",
-"./foto/g.png",
-"./foto/h.png",
-"./foto/i.png",
-"./foto/j.png",
-"./foto/k.png",
-"./foto/l.png",
-"./foto/m.png",
-"./foto/n.png",
-"./foto/o.png",
-"./foto/p.png",
-"./foto/q.png",
-"./foto/r.png",
-"./foto/s.png",
-"./foto/t.png",
-"./foto/u.png",
-"./foto/v.png",
-"./foto/w.png",
-"./foto/x.png",
-"./foto/y.png",
-"./foto/z.png"
-
-	    
+        const phrases = [
+            "Quando chiami la vacca, mucca",
+            "Quando Domenica dice arrivo, ma è ancora in pigiama",
+            "Quando tra due settimane hai l’esame e mettono l’ennesima riunione",
+            "Ma quando? ma chi? ma come?",
+            "Quando ti chiedono di scegliere tra la vita sociale e la soia",
+            "No raga, non me lo avete mai detto",
+            "Quando Erica legge il messaggio 17 volte prima di inviarlo",
+            "Quando Erica ride da sola per una cosa successa 2 anni fa",
+            "Quando un bambino vomita e sei l’unica che si sveglia",
+            "Quando ti chiedono di passare l’acqua, ma tu hai problemi di schiena",
+            "Quando non hai capito cosa ti hanno detto, ma fingi di ridere, nella speranza fosse una battuta",
+            "Quando l’hobgoblin finisce",
+            "Quando tu e le tue amiche vi dite “solo un drink” e poi tornate a casa alle 3",
+            "Quando esci dalla macchina e cadi",
+            "Quando Erica ti manda l’ennesimo sticker di star wars",
+            "Quando devi trovarti alle 7 a Portici e chiedi a qualcuno di farti compagnia",
+            "Quando Nicola dice ad Erica “stai zitta”",
+            "Quando Erica monta la tenda ma le avanza un pezzo",
+            "Quando dici ad Erica di scendere, ma è alle prese con le mille porte, l’immondizia e la colonia di gatti",
+            "Quando vai a ballare, ma sono le 2:30",
+            "Quando ricambi il saluto, ma in realtà non stavano salutando te",
+            "Quando stai per discutere la tesi ma sei emozionatissima",
+            "Quando vuoi ordinare patatine cheddar e bacon, ma le altre le vogliono semplici",
+            "Quando ti autoinviti a casa di Erica, ma lei dice “non posso, non ho sistemato”",
+            "Quando i tuoi amici hanno la puff, ma la usi solo tu",
+            "Quando Daniele ha paura, ma resta comunque il tuo lupetto preferito",
+            "Quando guardi un ulivo ed Erica dice “no, è un olea europaea”",
+            "Quando osi scambiare una vespa per un bombo",
+            "Quando ti propongo di bere una coca, ma preferiresti altro",
+            "Quando tua zia ti chiede “e il fidanzatino?”",
+            "Quando il prof dice ‘Non vi ruberò troppo tempo’ e poi inizia un TED talk.",
+            "Io che cerco la motivazione come se fosse un Pokémon raro.",
+            "Quando realizzi che la scadenza era ieri.",
+            "Il mio ultimo neurone durante la discussione della tesi.",
+            "Io che faccio del mio meglio, ma la vita continua a darmi tutorial di sopravvivenza.",
+            "Quando pensavo di avere tutto sotto controllo e invece no.",
+            "Io che cerco di sembrare adulta anche se non ho idea di cosa sto facendo.",
+            "Io che provo a funzionare con il 3% di batteria mentale.",
+            "Il momento in cui ti rendi conto che hai messo like a una foto del 2016 di una persona che stalkeravi",
+            "Quando sei in un cinema vuoto e si siedono proprio affianco a te.",
+            "Quando qualcuno ti sta così antipatico che anche il rumore del suo respiro ti infastidisce.",
+            "Quando sei introverso e ti dicono “dai andiamo a salutare” e vuoi sparire.",
+            "Quando qualcuno ti chiede “come stai?” e devi inventare qualcosa di convincente.",
+            "Quando pensavo di essere solo a casa e senti un rumore sospetto.",
+            "Quando sei di fretta, ma le persone davanti a te non ne vogliono sapere di accelerare il passo",
+            "Quando per l’ennesima volta ti chiedono di riconoscere una pianta solo perché fai l’agrario",
+            "Quando il rover in route ti dice “Ah perché lo svelto dovevo portarlo io?”",
+            "Quando ricevi messaggi gentili da un numero sconosciuto",
+            "Quando leggi la prima domanda di esami e capisci di non aver studiato abbastanza",
+            "Quando un bimbo ti regala un disegno buffo, ma deve rispondere “oddio, bellissimo!!”",
+            "Quando vedi una persona che conosci da lontano e devi decidere se salutarla o fingere la cecità",
+            "Quando mandi un vocale da 3 minuti e ti rispondono “ok”",
+            "Quando provi a raccontare una storia e qualcuno ti interrompe con “lo so già”",
+            "Quando ti chiedono “ma tu cosa vuoi dalla vita?” mentre stai solo cercando un parcheggio"
         ];
 
-        const cardContainer = document.getElementById('cardContainer');
-        const img = document.getElementById('displayImage');
-        const mysteryOverlay = document.getElementById('mysteryOverlay');
+        let isSelecting = false;
 
-        let rolling = false;
-        let isDragging = false;
-        let startX, startY;
-        let currentX = 0, currentY = 0;
-
-        function runSpinAnimation() {
-            if (rolling) return;
-            rolling = true;
-
-            img.style.opacity = "0";
-            mysteryOverlay.style.opacity = "1";
-            
-            cardContainer.classList.remove('smooth-spin');
-            void cardContainer.offsetWidth; 
-            cardContainer.classList.add('smooth-spin');
-
-            setTimeout(() => {
-                img.src = myPhotos[Math.floor(Math.random() * myPhotos.length)];
-            }, 1000);
-
-            setTimeout(() => {
-                rolling = false;
-                mysteryOverlay.style.opacity = "0";
-                img.style.opacity = "1";
-                cardContainer.classList.remove('smooth-spin');
-                cardContainer.style.transform = `translate(0, 0) rotateX(0deg) rotateY(0deg)`;
-            }, 2000);
+        function shuffleAndFill() {
+            const shuffled = [...phrases].sort(() => 0.5 - Math.random());
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.textContent = shuffled[index];
+            });
+            isSelecting = false;
         }
 
-        const onStart = (e) => {
-            if (rolling) return;
-            isDragging = true;
-            const pos = e.touches ? e.touches[0] : e;
-            startX = pos.clientX;
-            startY = pos.clientY;
-            cardContainer.style.transition = "none";
-        };
+        function selectCard(element) {
+            if (isSelecting) return;
+            isSelecting = true;
 
-        const onMove = (e) => {
-            if (rolling) return;
-            const pos = e.touches ? e.touches[0] : e;
+            const overlay = document.getElementById('fullscreenOverlay');
+            const fullContent = document.getElementById('fullCardContent');
             
-            if (isDragging) {
-                if (e.cancelable) e.preventDefault();
-                
-                currentX = pos.clientX - startX;
-                currentY = pos.clientY - startY;
-                const xRotation = -currentY / 15;
-                const yRotation = currentX / 15;
-                cardContainer.style.transform = `translate(${currentX}px, ${currentY}px) rotateX(${xRotation}deg) rotateY(${yRotation}deg)`;
-            } else {
-                const mouseX = (pos.clientX / window.innerWidth) - 0.5;
-                const mouseY = (pos.clientY / window.innerHeight) - 0.5;
-                cardContainer.style.transform = `rotateY(${mouseX * 25}deg) rotateX(${-mouseY * 25}deg)`;
-            }
-        };
+            fullContent.textContent = element.textContent;
+            fullContent.style.backgroundColor = getComputedStyle(element).backgroundColor;
+            
+            overlay.style.display = 'flex';
+        }
 
-        const onEnd = () => {
-            if (!isDragging) return;
-            isDragging = false;
+        function closeOverlay() {
+            document.getElementById('fullscreenOverlay').style.display = 'none';
+            shuffleAndFill();
+        }
 
-            const threshold = 80; 
-            if (Math.abs(currentX) > threshold || Math.abs(currentY) > threshold) {
-                runSpinAnimation();
-            } else {
-                cardContainer.style.transition = "transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
-                cardContainer.style.transform = `translate(0, 0) rotateX(0deg) rotateY(0deg)`;
-            }
-            currentX = 0;
-            currentY = 0;
-        };
-
-        window.addEventListener('mousedown', onStart);
-        window.addEventListener('mousemove', onMove);
-        window.addEventListener('mouseup', onEnd);
-
-        cardContainer.addEventListener('touchstart', onStart, { passive: false });
-        window.addEventListener('touchmove', onMove, { passive: false });
-        window.addEventListener('touchend', onEnd);
-
-        window.addEventListener('resize', () => {
-            cardContainer.style.transform = `translate(0, 0) rotateX(0deg) rotateY(0deg)`;
-        });
-
-        document.addEventListener('touchmove', function(e) {
-            e.preventDefault();
-        }, { passive: false });
+        window.onload = shuffleAndFill;
     </script>
 </body>
 </html>
