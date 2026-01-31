@@ -4,14 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
+    <!-- Meta tag per Web App iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="MA CHE NE SO">
-    <meta name="mobile-web-app-capable" content="yes">
-    
     <link rel="apple-touch-icon" href="goku.png">
+
+    <!-- Meta tag per Android / Chrome -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#FDFDFD">
     
-    <title>Franco Battiato il migliore</title>
+    <!-- Web App Manifest (Inline per compatibilità immediata) -->
+    <link rel="manifest" href='data:application/manifest+json,{"name":"Sono il migliore","short_name":"Migliore","start_url":".","display":"standalone","background_color":"#FDFDFD","theme_color":"#FDFDFD"}'>
+
+    <title>Scegli la migliore!</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -80,6 +86,7 @@
             transform: scale(0.96);
         }
 
+        /* Layout espansione asimmetrica */
         .card:nth-child(1) { 
             flex-grow: 1; 
             background-color: var(--cart-pink); 
@@ -147,17 +154,9 @@
         }
 
         @keyframes popInBounce {
-            0% { 
-                transform: scale(0.2) rotate(-15deg); 
-                opacity: 0;
-            }
-            70% {
-                transform: scale(1.05) rotate(2deg);
-            }
-            100% { 
-                transform: scale(1) rotate(0deg); 
-                opacity: 1;
-            }
+            0% { transform: scale(0.2) rotate(-15deg); opacity: 0; }
+            70% { transform: scale(1.05) rotate(2deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
         }
 
         .close-btn {
@@ -185,7 +184,6 @@
             transform: translateY(5px);
             box-shadow: 0 3px 0 var(--cart-black);
         }
-
     </style>
 </head>
 <body>
@@ -273,13 +271,10 @@
         function selectCard(element) {
             if (isSelecting) return;
             isSelecting = true;
-
             const overlay = document.getElementById('fullscreenOverlay');
             const fullContent = document.getElementById('fullCardContent');
-            
             fullContent.textContent = element.textContent;
             fullContent.style.backgroundColor = getComputedStyle(element).backgroundColor;
-            
             overlay.style.display = 'flex';
         }
 
