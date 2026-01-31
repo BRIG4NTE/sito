@@ -3,7 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Meme Royale - Cartoon Pastel iPad</title>
+    
+    <!-- Meta tag per Web App su iOS (Fullscreen) -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Meme Royale">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- CAMBIA IL LINK QUI SOTTO PER L'ICONA DELLA HOME SCREEN -->
+    <link rel="apple-touch-icon" href="immagine.png">
+    
+    <title>SEI SCARSO!!!</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -17,25 +27,30 @@
             --cart-black: #2D3436; 
         }
 
+        /* Impedisce il rimbalzo della pagina su iOS */
+        html, body {
+            position: fixed;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+        }
+
         body {
             font-family: 'Fredoka', sans-serif;
             background-color: #FDFDFD;
             color: var(--cart-black);
             touch-action: none;
-            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
             perspective: 2000px;
-            height: 100vh;
             margin: 0;
             padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         }
         
         .card-wrapper {
-            /* Ottimizzazione per iPad: dimensione dinamica basata sul lato corto */
             width: 70vw;
-            max-width: 400px; /* Più grande per iPad */
+            max-width: 400px; 
             min-width: 260px;
             aspect-ratio: 9 / 16;
             position: relative;
@@ -45,7 +60,6 @@
             z-index: 10;
         }
 
-        /* Adattamento per schermi molto alti (iPad Pro verticale) */
         @media (min-height: 1000px) {
             .card-wrapper {
                 max-width: 450px;
@@ -156,7 +170,6 @@
 <body>
 
     <div id="cardContainer" class="card-wrapper">
-        <!-- Strati di spessore pastello -->
         <div class="card-thickness" style="transform: translateZ(10px); background: var(--cart-orange);"></div>
         <div class="card-thickness" style="transform: translateZ(5px); background: var(--cart-yellow);"></div>
         <div class="card-thickness" style="transform: translateZ(0px); background: var(--cart-cyan);"></div>
@@ -167,17 +180,17 @@
 
         <div class="card-front">
             <div id="mysteryOverlay">?</div>
-            <img id="displayImage" src="https://picsum.photos/800/1200?random=701" alt="Immagine Divertente">
+            <img id="displayImage" src="https://picsum.photos/800/1200?random=801" alt="Immagine Divertente">
         </div>
     </div>
 
     <script>
         const myPhotos = [
-            "https://picsum.photos/800/1200?random=71",
-            "https://picsum.photos/800/1200?random=72",
-            "https://picsum.photos/800/1200?random=73",
-            "https://picsum.photos/800/1200?random=74",
-            "https://picsum.photos/800/1200?random=75"
+            "https://picsum.photos/800/1200?random=81",
+            "https://picsum.photos/800/1200?random=82",
+            "https://picsum.photos/800/1200?random=83",
+            "https://picsum.photos/800/1200?random=84",
+            "https://picsum.photos/800/1200?random=85"
         ];
 
         const cardContainer = document.getElementById('cardContainer');
@@ -227,7 +240,6 @@
             const pos = e.touches ? e.touches[0] : e;
             
             if (isDragging) {
-                // Previene lo scrolling della pagina su iPad durante il drag
                 if (e.cancelable) e.preventDefault();
                 
                 currentX = pos.clientX - startX;
@@ -246,7 +258,7 @@
             if (!isDragging) return;
             isDragging = false;
 
-            const threshold = 80; // Soglia leggermente più alta per schermi grandi
+            const threshold = 80; 
             if (Math.abs(currentX) > threshold || Math.abs(currentY) > threshold) {
                 runSpinAnimation();
             } else {
@@ -265,10 +277,13 @@
         window.addEventListener('touchmove', onMove, { passive: false });
         window.addEventListener('touchend', onEnd);
 
-        // Resize handler per ricalcolare la centratura se l'iPad ruota
         window.addEventListener('resize', () => {
             cardContainer.style.transform = `translate(0, 0) rotateX(0deg) rotateY(0deg)`;
         });
+
+        document.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, { passive: false });
     </script>
 </body>
 </html>
